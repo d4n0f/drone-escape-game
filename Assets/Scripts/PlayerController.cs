@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed;
     CharacterController characterController;
 
+    public bool canMove = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ControllPlayer();
+    }
+
+    void ControllPlayer()
+    {
+        if (!canMove)
+        {
+            return;
+        }
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
@@ -26,10 +38,5 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(direction * speed * Time.deltaTime);
-
-       
-        
-
-        //transform.Translate(direction * speed * Time.deltaTime, Space.World);
     }
 }

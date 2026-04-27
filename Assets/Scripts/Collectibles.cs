@@ -20,7 +20,7 @@ public class Collectibles : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(this.gameObject);
         gameManager.SpawnNewCoin();
+        Destroy(this.gameObject);
     }
 }
