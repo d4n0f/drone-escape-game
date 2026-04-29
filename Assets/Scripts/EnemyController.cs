@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     Rigidbody rb;
     GameManager gameManager;
 
-    [SerializeField] float speed = 8.0f;
+    [SerializeField] float speed = 6.0f;
 
     public bool canMove = true;
 

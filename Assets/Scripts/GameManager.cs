@@ -23,17 +23,40 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button startBtn;
     [SerializeField] Button quitBtn;
     [SerializeField] Button restartBtn;
+    [SerializeField] Button easyModeBtn;
+    [SerializeField] Button hardModeBtn;
 
     SpawnManager spawnManager;
     PauseManager pauseManager;
 
     int coinCount = 0;
-    int timer = 60;
-    public int health = 5;
-    private int maxHealth = 5;
+    int coinsNeededToWin;
+    int timer;
+    public int health;
+    private int maxHealth;
 
     public bool isGameOver = false;
     public bool isGameStarted = false;
+
+    public void OnEasyModeSelected()
+    {
+        timer = 60;
+        health = 5;
+        maxHealth = 5;
+        coinsNeededToWin = 10;
+
+        StartGame();
+    }
+
+    public void OnHardModeSelected()
+    {
+        timer = 45;
+        health = 3;
+        maxHealth = 3;
+        coinsNeededToWin = 15;
+
+        StartGame();
+    }
 
     public IEnumerator ShowHelpText()
     {
@@ -125,54 +148,69 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Time freeze
-        Time.timeScale = 0f;
-
-        // Menü elemeinek megjelenítése
-        gameTitle.gameObject.SetActive(true);
-        startBtn.gameObject.SetActive(true);
-        quitBtn.gameObject.SetActive(true);
-
         // Játék elemeinek elrejtése
-        restartBtn.gameObject.SetActive(false);
         healthText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         helpText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         timerText.gameObject.SetActive(false);
-
-        isGameOver = false;
+        easyModeBtn.gameObject.SetActive(false);
+        hardModeBtn.gameObject.SetActive(false);
+        restartBtn.gameObject.SetActive(false);
 
         pauseManager = GameObject.Find("PauseManager").GetComponent<PauseManager>();
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
-        spawnManager.StartSpawning();
-
-        StartCoroutine(Countdown());
+        // Time freeze
+        Time.timeScale = 0f;
     }
 
-    public void StartGame()
+    public void OnStartBtnSelected()
     {
-        // !Time freeze
-        Time.timeScale = 1f;
-
         // Menü elemeinek elrejtése
         gameTitle.gameObject.SetActive(false);
         startBtn.gameObject.SetActive(false);
         quitBtn.gameObject.SetActive(false);
 
-        // Játék elemeinek megjelenítése
+        // Menü elemek megjelenítése
+        easyModeBtn.gameObject.SetActive(true);
+        hardModeBtn.gameObject.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        // Time unfreeze
+        Time.timeScale = 1f;
+
+        // Menü elemek elrejtése
+        easyModeBtn.gameObject.SetActive(false);
+        hardModeBtn.gameObject.SetActive(false);
+        gameOverText.gameObject.SetActive(false);
+        restartBtn.gameObject.SetActive(false);
+
+        // Játék elemek megjelenítése
         healthText.gameObject.SetActive(true);
         scoreText.gameObject.SetActive(true);
         timerText.gameObject.SetActive(true);
 
+        // Állapot resetelése
         isGameStarted = true;
+        isGameOver = false;
+        coinCount = 0;
+
+        // Játékos resetelése
+        player.GetComponent<PlayerController>().canMove = true;
+
+        StartCoroutine(Countdown());
+        spawnManager.StartSpawning();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (coinCount == 10)
+        if (!isGameStarted || isGameOver) return;
+
+        if (coinCount == coinsNeededToWin)
         {
             GameOver(true);
         }
@@ -202,7 +240,13 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         gameOverText.gameObject.SetActive(true);
         player.GetComponent<PlayerController>().canMove = false;
-        enemyPrefab.GetComponent<EnemyController>().canMove = false;
+        //enemyPrefab.GetComponent<EnemyController>().canMove = false;
+
+        foreach (EnemyController enemy in FindObjectsOfType<EnemyController>())
+        {
+            enemy.canMove = false;
+        }
+
         StopAllCoroutines();
     }
 
