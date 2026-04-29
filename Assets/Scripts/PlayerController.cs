@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
     CharacterController characterController;
+    GameManager gameManager;
 
     public bool canMove = true;
 
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -23,10 +25,7 @@ public class PlayerController : MonoBehaviour
 
     void ControllPlayer()
     {
-        if (!canMove)
-        {
-            return;
-        }
+        if (!canMove) { return; }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -38,5 +37,14 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(direction * speed * Time.deltaTime);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            gameManager.TakeDamage();
+            Destroy(collision.gameObject);
+        }
     }
 }

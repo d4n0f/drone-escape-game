@@ -6,14 +6,31 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject player;
+    [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject coinPrefab;
 
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] TextMeshProUGUI gameOverText;
+    [SerializeField] TextMeshProUGUI healthText;
 
     int coinCount = 0;
     int timer = 60;
+    public int health = 5;
+
+    public bool isGameOver = false;
+
+    public void TakeDamage()
+    {
+        health--;
+
+        healthText.SetText("Életerõ: " + health);
+
+        if (health <= 0)
+        {
+            GameOver(false);
+        }
+    }
 
     IEnumerator Countdown()
     {
@@ -59,6 +76,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameOverText.gameObject.SetActive(false);
+        isGameOver = false;
 
         StartCoroutine(Countdown());
     }
@@ -79,8 +97,10 @@ public class GameManager : MonoBehaviour
             gameOverText.SetText("Gratulálok, nyertél! :)");
         }
 
+        isGameOver = true;
         gameOverText.gameObject.SetActive(true);
         player.GetComponent<PlayerController>().canMove = false;
+        enemyPrefab.GetComponent<EnemyController>().canMove = false;
         StopAllCoroutines();
     }
 }
