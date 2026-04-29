@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     CharacterController characterController;
     GameManager gameManager;
 
+    [SerializeField] AudioClip birdSound;
+
     public bool canMove = true;
 
     // Start is called before the first frame update
@@ -46,6 +48,9 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             gameManager.TakeDamage();
+
+            AudioSource.PlayClipAtPoint(birdSound, transform.position, 1f);
+
             Destroy(collision.gameObject);
         }
     }

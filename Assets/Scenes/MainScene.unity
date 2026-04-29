@@ -2349,6 +2349,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2368308556391089273, guid: f970105f4021c4441873926253dfda0b, type: 3}
+      propertyPath: birdSound
+      value: 
+      objectReference: {fileID: 8300000, guid: d47ee6e223f711749b1b6bfcfc7719d3, type: 3}
     - target: {fileID: 3289216275583200071, guid: f970105f4021c4441873926253dfda0b, type: 3}
       propertyPath: m_Size.x
       value: 2.9865801
@@ -2758,7 +2762,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fe818dfee81ea5c44bbe629496d27b6d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.195
+  m_Volume: 0.044
   m_Pitch: 1
   Loop: 1
   Mute: 0
