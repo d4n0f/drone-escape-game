@@ -19,13 +19,17 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        InvokeRepeating(nameof(SpawnEnemy), startDelay, spawnInterval);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void StartSpawning()
+    {
+        InvokeRepeating(nameof(SpawnEnemy), startDelay, spawnInterval);
     }
 
     void SpawnEnemy()

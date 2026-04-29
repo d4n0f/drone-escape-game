@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +18,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI gameOverText;
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI helpText;
+    [SerializeField] TextMeshProUGUI gameTitle;
+
+    [SerializeField] Button startBtn;
+    [SerializeField] Button quitBtn;
+    [SerializeField] Button restartBtn;
+
+    SpawnManager spawnManager;
+    PauseManager pauseManager;
 
     int coinCount = 0;
     int timer = 60;
@@ -22,6 +33,7 @@ public class GameManager : MonoBehaviour
     private int maxHealth = 5;
 
     public bool isGameOver = false;
+    public bool isGameStarted = false;
 
     public IEnumerator ShowHelpText()
     {
@@ -113,11 +125,48 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Time freeze
+        Time.timeScale = 0f;
+
+        // Menü elemeinek megjelenítése
+        gameTitle.gameObject.SetActive(true);
+        startBtn.gameObject.SetActive(true);
+        quitBtn.gameObject.SetActive(true);
+
+        // Játék elemeinek elrejtése
+        restartBtn.gameObject.SetActive(false);
+        healthText.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
         helpText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
+        timerText.gameObject.SetActive(false);
+
         isGameOver = false;
 
+        pauseManager = GameObject.Find("PauseManager").GetComponent<PauseManager>();
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        spawnManager.StartSpawning();
+
         StartCoroutine(Countdown());
+    }
+
+    public void StartGame()
+    {
+        // !Time freeze
+        Time.timeScale = 1f;
+
+        // Menü elemeinek elrejtése
+        gameTitle.gameObject.SetActive(false);
+        startBtn.gameObject.SetActive(false);
+        quitBtn.gameObject.SetActive(false);
+
+        // Játék elemeinek megjelenítése
+        healthText.gameObject.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        timerText.gameObject.SetActive(true);
+
+        isGameStarted = true;
     }
 
     // Update is called once per frame
@@ -126,6 +175,18 @@ public class GameManager : MonoBehaviour
         if (coinCount == 10)
         {
             GameOver(true);
+        }
+
+        // Játék szüneteltetése
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            pauseManager.TogglePause();
+        }
+
+        // Kilépés a Fõmenübe
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            RestartGame();
         }
     }
 
@@ -136,10 +197,22 @@ public class GameManager : MonoBehaviour
             gameOverText.SetText("Gratulálok, nyertél! :)");
         }
 
+        restartBtn.gameObject.SetActive(true);
+
         isGameOver = true;
         gameOverText.gameObject.SetActive(true);
         player.GetComponent<PlayerController>().canMove = false;
         enemyPrefab.GetComponent<EnemyController>().canMove = false;
         StopAllCoroutines();
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

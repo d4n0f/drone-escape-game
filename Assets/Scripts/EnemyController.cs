@@ -36,13 +36,15 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!gameManager.isGameStarted) return;
+
         FollowPlayer();
     }
 
     // Update is called once per frame
     void FollowPlayer()
     {
-        if (gameManager.isGameOver) { return; }
+        if (gameManager.isGameOver) return;
 
         Vector3 dir = (player.transform.position - transform.position).normalized;
         Vector3 newPos = rb.position + dir * speed * Time.fixedDeltaTime;
