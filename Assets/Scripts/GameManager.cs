@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void OnHardModeSelected()
     {
-        timer = 45;
+        timer = 60;
         health = 3;
         maxHealth = 3;
         coinsNeededToWin = 15;
@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
     void UpdateCoinCounter()
     {
         coinCount++;
-        scoreText.SetText("Pontszám: " + coinCount.ToString());
+        scoreText.SetText("Pontszám: " + coinCount.ToString() + "/" + coinsNeededToWin.ToString());
     }
 
     // Start is called before the first frame update
@@ -200,6 +200,8 @@ public class GameManager : MonoBehaviour
 
         // Játékos resetelése
         player.GetComponent<PlayerController>().canMove = true;
+
+        scoreText.SetText("Pontszám: " + coinCount.ToString() + "/" + coinsNeededToWin.ToString());
 
         StartCoroutine(Countdown());
         spawnManager.StartSpawning();
