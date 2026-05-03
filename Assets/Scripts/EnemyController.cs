@@ -9,7 +9,9 @@ public class EnemyController : MonoBehaviour
     GameObject player;
     Rigidbody rb;
     GameManager gameManager;
+    Animator animator;
 
+    [SerializeField] AudioClip birdSound;
     [SerializeField] float speed = 6.0f;
 
     public bool canMove = true;
@@ -20,6 +22,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -52,5 +55,12 @@ public class EnemyController : MonoBehaviour
         newPos.y = 5;
 
         rb.MovePosition(newPos);
+    }
+
+    public void Die()
+    {
+        AudioSource.PlayClipAtPoint(birdSound, transform.position, 1f);
+        animator.SetTrigger("Die");
+        Destroy(gameObject,0.05f);
     }
 }

@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     CharacterController characterController;
     GameManager gameManager;
 
-    [SerializeField] AudioClip birdSound;
-
     public bool canMove = true;
 
     // Start is called before the first frame update
@@ -35,6 +33,9 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
+        float tilt = Input.GetAxis("Horizontal") * 20f;
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, -tilt);
+
         if (direction != Vector3.zero)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 0.15f);
@@ -49,9 +50,9 @@ public class PlayerController : MonoBehaviour
         {
             gameManager.TakeDamage();
 
-            AudioSource.PlayClipAtPoint(birdSound, transform.position, 1f);
+            collision.gameObject.GetComponent<EnemyController>().Die();
 
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
         }
     }
 }
