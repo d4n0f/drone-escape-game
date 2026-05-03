@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI helpText2;
     [SerializeField] TextMeshProUGUI gameTitle;
     [SerializeField] TextMeshProUGUI gameDiffText;
+    [SerializeField] TextMeshProUGUI pauseAndExitText;
 
     [SerializeField] Button startBtn;
     [SerializeField] Button quitBtn;
@@ -177,6 +178,7 @@ public class GameManager : MonoBehaviour
         hardModeBtn.gameObject.SetActive(false);
         restartBtn.gameObject.SetActive(false);
         gameDiffText.gameObject.SetActive(false);
+        pauseAndExitText.gameObject.SetActive(true);
 
         pauseManager = GameObject.Find("PauseManager").GetComponent<PauseManager>();
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -209,6 +211,7 @@ public class GameManager : MonoBehaviour
         gameDiffText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         restartBtn.gameObject.SetActive(false);
+        pauseAndExitText.gameObject.SetActive(false);
 
         // Játék elemek megjelenítése
         healthText.gameObject.SetActive(true);
