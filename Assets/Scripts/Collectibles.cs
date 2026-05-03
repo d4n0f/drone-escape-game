@@ -5,6 +5,7 @@ using UnityEngine;
 public class Collectibles : MonoBehaviour
 {
     GameManager gameManager;
+    [SerializeField] AudioClip coinPickUp;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class Collectibles : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
+        AudioSource.PlayClipAtPoint(coinPickUp, transform.position, 5f);
         gameManager.SpawnNewCoin();
         Destroy(this.gameObject);
     }

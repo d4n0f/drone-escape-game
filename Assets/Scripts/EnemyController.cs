@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
 
     public void Die()
     {
-        AudioSource.PlayClipAtPoint(birdSound, transform.position, 1f);
+        AudioSource.PlayClipAtPoint(birdSound, transform.position, 5f);
         animator.SetTrigger("Die");
         Destroy(gameObject,0.05f);
     }

@@ -104,8 +104,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
-  m_Height: 2.64
+  m_Radius: 0.79
+  m_Height: 3.45
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &834778808579600041
@@ -120,3 +120,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbedc84ba53e01c4cacaa1c7afaf7d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  batteryPickUp: {fileID: 8300000, guid: cb1d3638ad79a61489e4345bec789413, type: 3}

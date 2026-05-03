@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI gameOverText;
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI helpText;
+    [SerializeField] TextMeshProUGUI helpText2;
     [SerializeField] TextMeshProUGUI gameTitle;
+    [SerializeField] TextMeshProUGUI gameDiffText;
 
     [SerializeField] Button startBtn;
     [SerializeField] Button quitBtn;
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
     int coinsNeededToWin;
     int timer;
     public int health;
-    private int maxHealth;
+    public int maxHealth;
 
     public bool isGameOver = false;
     public bool isGameStarted = false;
@@ -55,6 +57,8 @@ public class GameManager : MonoBehaviour
         maxHealth = 3;
         coinsNeededToWin = 15;
 
+        healthText.SetText("Életerõ: 3");
+
         StartGame();
     }
 
@@ -70,6 +74,20 @@ public class GameManager : MonoBehaviour
         }
 
         helpText.gameObject.SetActive(false);
+    }
+
+    public IEnumerator ShowHelpText2()
+    {
+        int helpTextTimer = 8; // Ennyi ideig fog megjelenni a help szöveg
+        helpText2.gameObject.SetActive(true);
+
+        while (helpTextTimer > 0)
+        {
+            yield return new WaitForSeconds(1.0f); // Biztosítja, hogy 1 mp-et várjon mielõtt kivon 1-et a jelenlegi értékbõl
+            helpTextTimer--;
+        }
+
+        helpText2.gameObject.SetActive(false);
     }
 
     public void PickUpBattery()
@@ -152,11 +170,13 @@ public class GameManager : MonoBehaviour
         healthText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         helpText.gameObject.SetActive(false);
+        helpText2.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         timerText.gameObject.SetActive(false);
         easyModeBtn.gameObject.SetActive(false);
         hardModeBtn.gameObject.SetActive(false);
         restartBtn.gameObject.SetActive(false);
+        gameDiffText.gameObject.SetActive(false);
 
         pauseManager = GameObject.Find("PauseManager").GetComponent<PauseManager>();
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -173,6 +193,7 @@ public class GameManager : MonoBehaviour
         quitBtn.gameObject.SetActive(false);
 
         // Menü elemek megjelenítése
+        gameDiffText.gameObject.SetActive(true);
         easyModeBtn.gameObject.SetActive(true);
         hardModeBtn.gameObject.SetActive(true);
     }
@@ -185,6 +206,7 @@ public class GameManager : MonoBehaviour
         // Menü elemek elrejtése
         easyModeBtn.gameObject.SetActive(false);
         hardModeBtn.gameObject.SetActive(false);
+        gameDiffText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         restartBtn.gameObject.SetActive(false);
 
