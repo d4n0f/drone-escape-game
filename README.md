@@ -15,7 +15,7 @@ The player has limited health and time to complete the objective. Batteries can 
 * Sound effects and animations
 * Gameplay UI
 ## Controls
-* WASD / Arrow Keys — Move
+* WASD — Moving
 * P — Pause game
 * ESC — Restart game
 ## Built With
